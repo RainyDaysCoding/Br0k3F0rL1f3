@@ -1,0 +1,31 @@
+﻿using Microsoft.Extensions.Logging;
+using Br0k3F0rL1f3.Shared.Services;
+using Br0k3F0rL1f3.Services;
+
+namespace Br0k3F0rL1f3;
+
+public static class MauiProgram
+{
+    public static MauiApp CreateMauiApp()
+    {
+        var builder = MauiApp.CreateBuilder();
+        builder
+            .UseMauiApp<App>()
+            .ConfigureFonts(fonts =>
+            {
+                fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
+            });
+
+        // Add device-specific services used by the Br0k3F0rL1f3.Shared project
+        builder.Services.AddSingleton<IFormFactor, FormFactor>();
+
+        builder.Services.AddMauiBlazorWebView();
+
+#if DEBUG
+        builder.Services.AddBlazorWebViewDeveloperTools();
+        builder.Logging.AddDebug();
+#endif
+
+        return builder.Build();
+    }
+}
